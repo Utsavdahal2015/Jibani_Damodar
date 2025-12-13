@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+ 
+    <title>जिवनी | स्व. दामाेदर दाहाल</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #272C37;
+            /* font-family: 'Aakriti'; */
+            /* font-family: "Baloo 2", sans-serif; */
+            color: white;
+            text-align: center;
+            font-size: 14px;
+            font-family: "Baloo 2", sans-serif;
+        }
+
+        .container {
+            width: 400px;
+            height: auto;
+            margin: auto;
+            padding: 10px;
+            position: relative;   
+        }
+
+        .text-large {
+            font-size: 30px;
+            font-family: "Baloo 2", sans-serif;
+            font-weight: 800;
+        }
+
+        table{
+            width: auto;
+            border-collapse: collapse;
+            border: 1px solid white;
+        }
+
+        th,td{
+            padding: 5px;
+            border: 1px solid bl;
+        }
+        
+
+
+
+
+
+        .registration{
+            height: 48px;
+            width: 320px;
+            /* background-color: rgb(5, 173, 27); */
+            background: linear-gradient(135deg, #152A57, #1E3A8A);
+            position: fixed;
+            bottom: 65px;
+            left: 0px;
+            right: 0px;
+            margin: auto;  
+            font-size: 20px;  
+            font-family: "Baloo 2", sans-serif; 
+            font-weight: 800;
+            color: white; 
+            cursor: pointer;  
+
+            border: 2px solid rgba(6, 160, 180, 0.288); 
+            transition: all 0.2s ease;
+        }
+
+
+        /* .registration {
+            height: 48px; 
+            width: 320px; 
+            background: linear-gradient(135deg, #152A57, #1E3A8A); 
+            position: fixed;
+            bottom: 65px;
+            left: 0px;
+            right: 0px;
+            margin: auto;  
+            font-size: 20px;
+            font-family: "Baloo 2", sans-serif; 
+            font-weight: 800;
+            color: white; 
+            border: 3px solid rgba(255, 255, 255, 0.3); 
+            border-radius: 25px; 
+            cursor: pointer; 
+            box-shadow: 0px 6px 12px rgba(21, 42, 87, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        } */
+
+
+        .registration:active {
+            transform: scale(0.92); /* Slight shrink effect when clicked */
+        }
+
+        /* Animation for the shrink effect */
+        @keyframes shrink {
+            0% {
+                transform: scale(1);
+            }
+           50% {
+                 transform: scale(0.92);
+            }
+            100% {
+                transform: scale(1);
+            } 
+        }
+        .registration.shrink-effect {
+            animation: shrink 0.5s ease; /* Apply the shrink animation */
+        }
+
+        button{
+            height: 36px;
+            width: 187px;
+            background-color: #152A57;
+            position: absolute;
+            font-size: 18px;
+            font-family: "Baloo 2", sans-serif;
+            font-weight: 600;
+            margin-left: 2px;
+            margin-top: 2px;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+
+
+        .btn_container{
+            height: 40px;
+            width:380px;
+            background-color: rgb(255, 255, 255);
+            border-radius: 40px;
+            position: fixed;
+            bottom: 10px;
+        }
+
+        .modal{
+            display: none;
+            position: fixed;
+            top: 30%; /* Adjust vertical position */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #cfcfcf;
+            box-shadow: 0px 4px 10px #2c2929;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            height: 280px;
+            text-align: center;  
+            justify-content:center ;
+            z-index: 999;
+        }
+
+        .registration:focus {
+            outline: none; /* Remove the focus outline */
+            box-shadow: none; /* Remove the focus shadow (if any) */
+        }
+
+        form{
+            color: #272C37;
+            text-align: center;
+            width: 100%;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 12px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #submit{
+            height: 40px;
+            width: 125px;
+            color:white;
+            background-color: #0f204e;
+            border-radius: 5px;
+            float: center; /* Align the button to the right */
+            margin-top: 3px; /* Add some spacing above the button */
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #0f204e;
+        }
+
+        /* .thank-you-popup {
+        display: flex;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #152a57b9;
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 16px;
+        text-align: center;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        z-index: 999;
+        } */
+
+        .thank-you-popup {
+        display: none;
+        width: 250px;
+        height: 80px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #ffffff;
+        color: #152A57;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 550;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0px 4px 10px #152a57b9;
+        z-index: 999;
+        } 
+
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap" rel="stylesheet">
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="text-large">अनलाईन उपस्थिति</div>
+    
+            <div style="text-align: justify; margin-top: 40px;  margin-bottom: 20px;">
+                
+                <table border=2px>
+                    <tr>
+                        <th style="width: 30px">क्र. सं.</th>
+                        <th style="width: 300px">पूरा नाम</th>
+                        <th style="width: 140px">ठेगाना</th>
+                        <th style="width: 70px">सम्पर्क नम्बर</th>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">1</td>
+                        <td>x</td>
+                        <td>दxcsमक</td>
+                        <td>98xxx</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">2</td>
+                        <td>x</td>
+                        <td>Kathmandu</td>
+                        <td>98xxx</td>
+                    </tr>
+                </table>
+
+                <!-- Add this hidden iframe somewhere in your HTML -->
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="thankYouPopup()"></iframe>
+
+                
+                दाहाल परिवारका अग्रज व्यक्तित्व, बद्लिदो समय अनुसारको सोच राख्ने, धेरै जनाको अन्तिम समयमा साथ दिनुहुने, निरन्तरता, अग्रसरता र परिश्रमका प्रतिक दामोदर दाहालको जन्म वि.सं. १९९७ जेष्ठ २८ गते भएको थियो । ताप्लेजुङ्ग जिल्ला आङ्खोप, मालबासेमा अभिचन्द्रकी धर्मपत्नी गौराको कोखबाट काईलो सुपुत्रका रुपमा दाहालको जन्म भयो ।
+                <br>
+                २००७ साल जेष्ठ ५ गते १० वर्षको उमेरमा पाँचथर जिल्ला तिखेम्बा निवासी पिता भवानीप्रसाद र माता लिलावती नेपालकी जेठी सुपुत्री मेनुका नेपालसँग वहाँ विवाह बन्धनमा बाँधिनुभयो ।
+                <br>
+                २००७ साल जेष्ठ ५ गते १० वर्षको उमेरमा पाँचथर जिल्ला तिखेम्बा निवासी पिता भवानीप्रसाद र माता लिलावती नेपालकी जेठी सुपुत्री मेनुका नेपालसँग वहाँ विवाह बन्धनमा बाँधिनुभयो ।
+                <br>
+                २००७ साल जेष्ठ ५ गते १० वर्षको उमेरमा पाँचथर जिल्ला तिखेम्बा निवासी पिता भवानीप्रसाद र माता लिलावती नेपालकी जेठी सुपुत्री मेनुका नेपालसँग वहाँ विवाह बन्धनमा बाँधिनुभयो ।
+                <br>
+                २००७ साल जेष्ठ ५ गते १० वर्षको उमेरमा पाँचथर जिल्ला तिखेम्बा निवासी पिता भवानीप्रसाद र माता लिलावती नेपालकी जेठी सुपुत्री मेनुका नेपालसँग वहाँ विवाह बन्धनमा बाँधिनुभयो ।
+                <br>
+                २००७ साल जेष्ठ ५ गते १० वर्षको उमेरमा पाँचथर जिल्ला तिखेम्बा निवासी पिता भवानीप्रसाद र माता लिलावती नेपालकी जेठी सुपुत्री मेनुका नेपालसँग वहाँ विवाह बन्धनमा बाँधिनुभयो ।
+                <br>
+                २००७ साल जेष्ठ ५ गते १० वर्षको उमेरमा पाँचथर जिल्ला तिखेम्बा निवासी पिता भवानीप्रसाद र माता लिलावती नेपालकी जेठी सुपुत्री मेनुका नेपालसँग वहाँ विवाह बन्धनमा बाँधिनुभयो ।
+                <br>
+                २००७ साल जेष्ठ ५ गते १० वर्षको उमेरमा पाँचथर जिल्ला तिखेम्बा निवासी पिता भवानीप्रसाद र माता लिलावती नेपालकी जेठी सुपुत्री मेनुका नेपालसँग वहाँ विवाह बन्धनमा बाँधिनुभयो ।
+                <br>
+                २००७ साल जेष्ठ ५ गते १० वर्षको उमेरमा पाँचथर जिल्ला तिखेम्बा निवासी पिता भवानीप्रसाद र माता लिलावती नेपालकी जेठी सुपुत्री मेनुका नेपालसँग वहाँ विवाह बन्धनमा बाँधिनुभयो ।
+                <br>
+                २००७ साल जेष्ठ ५ गते १० वर्षको उमेरमा पाँचथर जिल्ला तिखेम्बा निवासी पिता भवानीप्रसाद र माता लिलावती नेपालकी जेठी सुपुत्री मेनुका नेपालसँग वहाँ विवाह बन्धनमा बाँधिनुभयो ।
+                <br>
+                २००७ साल जेष्ठ ५ गते १० वर्षको उमेरमा पाँचथर जिल्ला तिखेम्बा निवासी पिता भवानीप्रसाद र माता लिलावती नेपालकी जेठी सुपुत्री मेनुका नेपालसँग वहाँ विवाह बन्धनमा बाँधिनुभयो ।
+                
+            </div>
+
+            <button class="registration" id="upastithi">
+                अनलाईन उपस्थिति जनाउनुहाेस्
+            </button>
+
+             <!-- Thank You Popup -->
+             <div id="thank-you-popup" class="thank-you-popup">
+                धन्यवाद !
+            </div>
+            
+
+
+
+
+            <div class="modal" id="login-modal">
+                <span class="close-modal" style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #0f204e;">&times;</span>
+                <!-- <form action="connect.php" method="POST"> -->
+                <form id="list" action="https://script.google.com/macros/s/AKfycbw2NGf4RucXCKjqBiKkYr0ZrLG3KACf8VjlvEqoV4_fpNc--6FE_J0e2ZsdVCWuyLcbEQ/exec" method="POST" target="hidden_iframe">
+                    <h4 style="font-weight: 600; color:#0f204e; text-align: left;">तपाईंको जानकारी ?</h4>
+                    <input type="text" name="fullName" placeholder="पूरा नाम" required>
+                    <input type="text" name="address" placeholder="ठेगाना">
+                    <input type="tel" name="phoneNum" placeholder="सम्पर्क नम्बर">
+                    <button id="submit" name="submit" type="submit">
+                        बुझाउनुहोस्
+                    </button>
+                </form>
+            </div>
+
+            
+
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="btn_container">
+                    <a href="index.html">
+                        <button style="background-color: rgb(255, 255, 255); color: #152A57; left: 0;">
+                            जिवनी पढ्न
+                        </button>   
+                    </a>
+                    <button style="background-color: #152A57; color: #ffffff; margin-left: 1px;">
+                        उपस्थिति जनाउन
+                    </button>     
+                    </div>   
+                </div>
+            </div>
+
+
+            
+        </div>
+
+       <!-- Kam garne code till data fetching started. -->
+       
+        <!-- <script>
+
+            // Automatically trigger the shrink effect when the page loads
+            window.onload = function() {
+                const button = document.querySelector('.registration'); // Use class selector
+                button.classList.add('shrink-effect'); // Add the shrink animation class
+            };
+
+            $(function(){
+
+                //Modal
+                $('#upastithi').click(function(){
+                    $('#login-modal').fadeIn().css("display", "flex");
+                });
+
+                $('.close-modal').click(function() {
+                    $('#login-modal').fadeOut();
+                });
+
+                $(document).mouseup(function(e) {
+                    var modal = $('#login-modal');
+                    if (!modal.is(e.target) && modal.has(e.target).length === 0) {
+                    modal.fadeOut();
+                    }
+                });
+
+        $('#list').on('submit', function(e) {
+
+            // Show thank-you popup after 1 second
+            setTimeout(function() {
+                const popup = document.getElementById('thank-you-popup');
+                if (popup) {
+                    popup.style.display = 'flex';
+
+                    // Hide popup after 3 seconds
+                    setTimeout(() => {
+                        popup.style.display = 'none';
+                    }, 2000);
+                }
+
+                // Close modal
+                $('#login-modal').fadeOut();
+
+                // Reset form fields
+                document.getElementById('list').reset();
+            }, 250);
+        });
+    });
+            
+        </script> -->
+
+
+<script>
+$(function() {
+    // Automatically trigger the shrink effect when the page loads
+    const button = document.querySelector('.registration');
+    button.classList.add('shrink-effect');
+
+    // Modal open/close
+    $('#upastithi').click(function() {
+        $('#login-modal').fadeIn().css("display", "flex");
+    });
+    $('.close-modal').click(function() {
+        $('#login-modal').fadeOut();
+    });
+    $(document).mouseup(function(e) {
+        const modal = $('#login-modal');
+        if (!modal.is(e.target) && modal.has(e.target).length === 0) {
+            modal.fadeOut();
+        }
+    });
+
+    // --- Load all rows from Google Sheets ---
+    function loadTableData() {
+        $.ajax({
+            url: "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?action=getAll",
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+                const table = $('table');
+                table.find('tr:gt(0)').remove(); // Remove all rows except header
+                data.forEach((row, index) => {
+                    table.append(`
+                        <tr>
+                            <td style="text-align:center;">${index + 1}</td>
+                            <td>${row.fullName}</td>
+                            <td>${row.address}</td>
+                            <td>${row.phoneNum}</td>
+                        </tr>
+                    `);
+                });
+            },
+            error: function(err) {
+                console.error("Error fetching table data:", err);
+            }
+        });
+    }
+
+    // Load table data on page load
+    loadTableData();
+
+    // --- Form submit ---
+    $('#list').on('submit', function(e) {
+        const fullName = $('input[name="fullName"]').val();
+        const address = $('input[name="address"]').val();
+        const phoneNum = $('input[name="phoneNum"]').val();
+
+        // Append new row immediately in DOM
+        const table = $('table');
+        const rowCount = table.find('tr').length;
+        table.append(`
+            <tr>
+                <td style="text-align:center;">${rowCount}</td>
+                <td>${fullName}</td>
+                <td>${address}</td>
+                <td>${phoneNum}</td>
+            </tr>
+        `);
+
+        // Show thank-you popup
+        setTimeout(function() {
+            const popup = $('#thank-you-popup');
+            popup.css('display', 'flex');
+            setTimeout(() => popup.fadeOut(), 2000);
+            $('#login-modal').fadeOut();
+            $('#list')[0].reset();
+        }, 250);
+
+        // Allow form to submit to Google Sheets (target="hidden_iframe")
+    });
+});
+</script>
+
+
+
+    </body>
+</html>
