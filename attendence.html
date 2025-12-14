@@ -278,7 +278,7 @@
                 </table>
 
                 <!-- Add this hidden iframe somewhere in your HTML -->
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="thankYouPopup()"></iframe>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
                 
                 दाहाल परिवारका अग्रज व्यक्तित्व, बद्लिदो समय अनुसारको सोच राख्ने, धेरै जनाको अन्तिम समयमा साथ दिनुहुने, निरन्तरता, अग्रसरता र परिश्रमका प्रतिक दामोदर दाहालको जन्म वि.सं. १९९७ जेष्ठ २८ गते भएको थियो । ताप्लेजुङ्ग जिल्ला आङ्खोप, मालबासेमा अभिचन्द्रकी धर्मपत्नी गौराको कोखबाट काईलो सुपुत्रका रुपमा दाहालको जन्म भयो ।
@@ -429,85 +429,75 @@
 
 
 <script>
-$(function() {
-    // Automatically trigger the shrink effect when the page loads
-    const button = document.querySelector('.registration');
-    button.classList.add('shrink-effect');
+$(function () {
 
-    // Modal open/close
-    $('#upastithi').click(function() {
-        $('#login-modal').fadeIn().css("display", "flex");
-    });
-    $('.close-modal').click(function() {
-        $('#login-modal').fadeOut();
-    });
-    $(document).mouseup(function(e) {
+    // shrink animation
+    $('.registration').addClass('shrink-effect');
+
+    // modal open / close
+    $('#upastithi').on('click', () => $('#login-modal').fadeIn().css("display","flex"));
+    $('.close-modal').on('click', () => $('#login-modal').fadeOut());
+
+    $(document).mouseup(function(e){
         const modal = $('#login-modal');
         if (!modal.is(e.target) && modal.has(e.target).length === 0) {
             modal.fadeOut();
         }
     });
 
-    // --- Load all rows from Google Sheets ---
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2NGf4RucXCKjqBiKkYr0ZrLG3KACf8VjlvEqoV4_fpNc--6FE_J0e2ZsdVCWuyLcbEQ/exec";
+
+    /* =========================
+       LOAD DATA FROM SHEET
+       ========================= */
     function loadTableData() {
-        $.ajax({
-            url: "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?action=getAll",
-            method: "GET",
-            dataType: "json",
-            success: function(data) {
-                const table = $('table');
-                table.find('tr:gt(0)').remove(); // Remove all rows except header
-                data.forEach((row, index) => {
-                    table.append(`
-                        <tr>
-                            <td style="text-align:center;">${index + 1}</td>
-                            <td>${row.fullName}</td>
-                            <td>${row.address}</td>
-                            <td>${row.phoneNum}</td>
-                        </tr>
-                    `);
-                });
-            },
-            error: function(err) {
-                console.error("Error fetching table data:", err);
-            }
+        $.getJSON(SCRIPT_URL + "?action=getAll", function(data) {
+
+            const table = $('table');
+            table.find("tr:gt(0)").remove(); // clear old rows
+
+            data.forEach((row, index) => {
+                table.append(`
+                    <tr>
+                        <td style="text-align:center;">${index + 1}</td>
+                        <td>${row.fullName || ""}</td>
+                        <td>${row.address || ""}</td>
+                        <td>${row.phoneNum || ""}</td>
+                    </tr>
+                `);
+            });
+
+        }).fail(function(err){
+            console.error("Failed to load sheet data", err);
         });
     }
 
-    // Load table data on page load
+    // load on page refresh
     loadTableData();
 
-    // --- Form submit ---
-    $('#list').on('submit', function(e) {
-        const fullName = $('input[name="fullName"]').val();
-        const address = $('input[name="address"]').val();
-        const phoneNum = $('input[name="phoneNum"]').val();
+    /* =========================
+       FORM SUBMIT
+       ========================= */
+    $('#list').on('submit', function () {
 
-        // Append new row immediately in DOM
-        const table = $('table');
-        const rowCount = table.find('tr').length;
-        table.append(`
-            <tr>
-                <td style="text-align:center;">${rowCount}</td>
-                <td>${fullName}</td>
-                <td>${address}</td>
-                <td>${phoneNum}</td>
-            </tr>
-        `);
+        // after Google Sheet saves, reload table
+        setTimeout(() => {
+            loadTableData();
 
-        // Show thank-you popup
-        setTimeout(function() {
-            const popup = $('#thank-you-popup');
-            popup.css('display', 'flex');
-            setTimeout(() => popup.fadeOut(), 2000);
+            $('#thank-you-popup').css('display','flex');
+            setTimeout(() => $('#thank-you-popup').fadeOut(), 2000);
+
             $('#login-modal').fadeOut();
             $('#list')[0].reset();
-        }, 250);
+        }, 800); // wait for Apps Script write
 
-        // Allow form to submit to Google Sheets (target="hidden_iframe")
+        // DO NOT preventDefault — iframe submit required
     });
+
 });
 </script>
+
+
 
 
 
