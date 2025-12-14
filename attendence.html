@@ -376,7 +376,7 @@
 
        <!-- Kam garne code till data fetching started. -->
        
-        <!-- <script>
+        <script>
 
             // Automatically trigger the shrink effect when the page loads
             window.onload = function() {
@@ -425,80 +425,7 @@
         });
     });
             
-        </script> -->
-
-
-<script>
-$(function () {
-
-    // shrink animation
-    $('.registration').addClass('shrink-effect');
-
-    // modal open / close
-    $('#upastithi').on('click', () => $('#login-modal').fadeIn().css("display","flex"));
-    $('.close-modal').on('click', () => $('#login-modal').fadeOut());
-
-    $(document).mouseup(function(e){
-        const modal = $('#login-modal');
-        if (!modal.is(e.target) && modal.has(e.target).length === 0) {
-            modal.fadeOut();
-        }
-    });
-
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2NGf4RucXCKjqBiKkYr0ZrLG3KACf8VjlvEqoV4_fpNc--6FE_J0e2ZsdVCWuyLcbEQ/exec";
-
-    /* =========================
-       LOAD DATA FROM SHEET
-       ========================= */
-    function loadTableData() {
-        $.getJSON(SCRIPT_URL + "?action=getAll", function(data) {
-
-            const table = $('table');
-            table.find("tr:gt(0)").remove(); // clear old rows
-
-            data.forEach((row, index) => {
-                table.append(`
-                    <tr>
-                        <td style="text-align:center;">${index + 1}</td>
-                        <td>${row.fullName || ""}</td>
-                        <td>${row.address || ""}</td>
-                        <td>${row.phoneNum || ""}</td>
-                    </tr>
-                `);
-            });
-
-        }).fail(function(err){
-            console.error("Failed to load sheet data", err);
-        });
-    }
-
-    // load on page refresh
-    loadTableData();
-
-    /* =========================
-       FORM SUBMIT
-       ========================= */
-    $('#list').on('submit', function () {
-
-        // after Google Sheet saves, reload table
-        setTimeout(() => {
-            loadTableData();
-
-            $('#thank-you-popup').css('display','flex');
-            setTimeout(() => $('#thank-you-popup').fadeOut(), 2000);
-
-            $('#login-modal').fadeOut();
-            $('#list')[0].reset();
-        }, 800); // wait for Apps Script write
-
-        // DO NOT preventDefault — iframe submit required
-    });
-
-});
-</script>
-
-
-
+        </script>
 
 
     </body>
