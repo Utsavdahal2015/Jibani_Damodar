@@ -248,7 +248,8 @@
         outline: none;
         box-shadow: none;
         }
-        
+
+
     </style>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -332,36 +333,12 @@
                     <input type="text" name="fullName" placeholder="पूरा नाम" required>
                     <input type="text" name="address" placeholder="ठेगाना">
                     <input type="tel" name="phoneNum" placeholder="सम्पर्क नम्बर">
+                    <input type="hidden" name="clientSubmitTime" id="clientSubmitTime">
                     <button id="submit" name="submit" type="submit">
                         बुझाउनुहोस्
                     </button>
                 </form>
             </div>
-
-            
-
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             <div class="btn_container">
                     <a href="index.html">
@@ -382,112 +359,59 @@
 
        <!-- Kam garne code till data fetching started. -->
        
-       <script>
-    // ** IMPORTANT: This URL MUST be your deployed Google Apps Script Web App URL. **
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw2NGf4RucXCKjqBiKkYr0ZrLG3KACf8VjlvEqoV4_fpNc--6FE_J0e2ZsdVCWuyLcbEQ/exec"; 
-
-    /**
-     * Fetches attendance data from the Google Sheet and populates the table.
-     */
-    async function fetchAttendance() {
-        const fetchUrl = `${WEB_APP_URL}?action=getAll`;
-        const $table = $('table');
-        
-        // Remove existing rows (except the header row)
-        $table.find('tr:gt(0)').remove();
-
-        try {
-            const response = await fetch(fetchUrl);
-            
-            // Check if the response is valid (HTTP status 200)
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (Array.isArray(data)) {
-                // Iterate over the fetched data and build the HTML rows
-                const rows = data.map((entry, index) => {
-                    return `
-                        <tr>
-                            <td style="text-align: center;">${index + 1}</td>
-                            <td>${entry.fullName || ''}</td>
-                            <td>${entry.address || ''}</td>
-                            <td>${entry.phoneNum || ''}</td>
-                        </tr>
-                    `;
-                }).join(''); // Join all row strings into a single string
-
-                // Append all new rows to the table at once
-                $table.append(rows);
-            } else {
-                console.error("Fetched data is not an array:", data);
-                // Display error on the page
-                $table.after('<p style="color: red; margin-top: 10px;">डेटा ढाँचामा त्रुटि।</p>');
-            }
-
-        } catch (error) {
-            console.error("Error fetching attendance data:", error);
-             $table.after('<p style="color: red; margin-top: 10px;">उपस्थिति डाटा लोड गर्न सकिएन। कृपया Apps Script URL जाँच गर्नुहोस्।</p>');
-        }
-    }
+        <script>
 
 
-    $(function() {
-        // 1. Fetch data when the page loads
-        fetchAttendance(); 
 
-        // Initial animation
-        const button = document.querySelector('.registration');
-        if (button) {
-            button.classList.add('shrink-effect');
-        }
+            // Automatically trigger the shrink effect when the page loads
+            window.onload = function() {
+                const button = document.querySelector('.registration'); // Use class selector
+                button.classList.add('shrink-effect'); // Add the shrink animation class
+            };
 
-        // Modal Logic
-        $('#upastithi').click(function() {
-            $('#login-modal').fadeIn().css("display", "flex");
-        });
+            $(function(){
 
-        $('.close-modal').click(function() {
-            $('#login-modal').fadeOut();
-        });
+                //Modal
+                $('#upastithi').click(function(){
+                    $('#login-modal').fadeIn().css("display", "flex");
+                });
 
-        $(document).mouseup(function(e) {
-            var modal = $('#login-modal');
-            if (!modal.is(e.target) && modal.has(e.target).length === 0) {
-                modal.fadeOut();
-            }
-        });
+                $('.close-modal').click(function() {
+                    $('#login-modal').fadeOut();
+                });
 
-        // Form Submission Logic
-        // This is triggered *before* the iframe submission is complete
+                $(document).mouseup(function(e) {
+                    var modal = $('#login-modal');
+                    if (!modal.is(e.target) && modal.has(e.target).length === 0) {
+                    modal.fadeOut();
+                    }
+                });
+
         $('#list').on('submit', function(e) {
-            
-            // Show thank-you popup after a brief delay
+
+            // Show thank-you popup after 1 second
             setTimeout(function() {
                 const popup = document.getElementById('thank-you-popup');
                 if (popup) {
                     popup.style.display = 'flex';
-                    
-                    // Hide popup after 2 seconds
+
+                    // Hide popup after 3 seconds
                     setTimeout(() => {
                         popup.style.display = 'none';
                     }, 2000);
                 }
 
-                // Close modal and reset form
+                // Close modal
                 $('#login-modal').fadeOut();
+
+                // Reset form fields
                 document.getElementById('list').reset();
-
-                // ** 2. Refetch the data to update the table after successful submission **
-                // Give the Google Sheet a moment to process the iframe submission
-                setTimeout(fetchAttendance, 1000); 
-
-            }, 250); 
+            }, 250);
         });
     });
-</script>
+            
+        </script>
 
     </body>
 </html>
+
