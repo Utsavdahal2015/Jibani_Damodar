@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
+
 <!-- jQuery and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -263,29 +264,22 @@
     
             <div style="text-align: justify; margin-top: 40px;  margin-bottom: 20px;">
                 
-                <table border=2px>
+                <table id="attendanceTable" border="2px">
+                    <thead>
                     <tr>
                         <th style="width: 30px">क्र. सं.</th>
                         <th style="width: 300px">पूरा नाम</th>
                         <th style="width: 140px">ठेगाना</th>
                         <th style="width: 70px">सम्पर्क नम्बर</th>
                     </tr>
-                    <tr>
-                        <td style="text-align: center;">1</td>
-                        <td>x</td>
-                        <td>दxcsमक</td>
-                        <td>98xxx</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;">2</td>
-                        <td>x</td>
-                        <td>Kathmandu</td>
-                        <td>98xxx</td>
-                    </tr>
+                    </thead>
+                    <tbody id="data-output">
+                        </tbody>
+                    
                 </table>
 
                 <!-- Add this hidden iframe somewhere in your HTML -->
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
                 
                 दाहाल परिवारका अग्रज व्यक्तित्व, बद्लिदो समय अनुसारको सोच राख्ने, धेरै जनाको अन्तिम समयमा साथ दिनुहुने, निरन्तरता, अग्रसरता र परिश्रमका प्रतिक दामोदर दाहालको जन्म वि.सं. १९९७ जेष्ठ २८ गते भएको थियो । ताप्लेजुङ्ग जिल्ला आङ्खोप, मालबासेमा अभिचन्द्रकी धर्मपत्नी गौराको कोखबाट काईलो सुपुत्रका रुपमा दाहालको जन्म भयो ।
@@ -328,7 +322,7 @@
             <div class="modal" id="login-modal">
                 <span class="close-modal" style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #0f204e;">&times;</span>
                 <!-- <form action="connect.php" method="POST"> -->
-                <form id="list" action="https://script.google.com/macros/s/AKfycbw2NGf4RucXCKjqBiKkYr0ZrLG3KACf8VjlvEqoV4_fpNc--6FE_J0e2ZsdVCWuyLcbEQ/exec" method="POST" target="hidden_iframe">
+                <form id="list" action="https://script.google.com/macros/s/AKfycby2o_B6X9mkFRUyGT6Pbr1Gycin0RJj4LKOz9KK7-5ChfIz8pR36sdeKsiRvnlSgIRzBw/exec" method="POST" target="hidden_iframe">
                     <h4 style="font-weight: 600; color:#0f204e; text-align: left;">तपाईंको जानकारी ?</h4>
                     <input type="text" name="fullName" placeholder="पूरा नाम" required>
                     <input type="text" name="address" placeholder="ठेगाना">
@@ -356,13 +350,9 @@
 
             
         </div>
-
-       <!-- Kam garne code till data fetching started. -->
        
-        <script>
-
-
-
+        <!-- JSON mili ori data aba fetch garera display garna baki -->
+        <!-- <script>
             // Automatically trigger the shrink effect when the page loads
             window.onload = function() {
                 const button = document.querySelector('.registration'); // Use class selector
@@ -409,8 +399,136 @@
             }, 250);
         });
     });
-            
-        </script>
+
+
+
+    
+
+</script> -->
+
+
+
+        <script>
+    // ----------------------------------------------------------------------
+    // 1. CONFIGURATION
+    // ----------------------------------------------------------------------
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby2o_B6X9mkFRUyGT6Pbr1Gycin0RJj4LKOz9KK7-5ChfIz8pR36sdeKsiRvnlSgIRzBw/exec"; 
+    
+    // ----------------------------------------------------------------------
+    // 2. DATA FETCHING LOGIC 
+    // ----------------------------------------------------------------------
+    /**
+     * Fetches attendance data from the Google Sheet and dynamically populates the HTML table.
+     */
+    function fetchAttendance() {
+        const placeholder = document.querySelector("#data-output");
+        
+        // Display loading message
+        placeholder.innerHTML = '<tr><td colspan="4" style="text-align: center;">डाटा लोड हुँदैछ...</td></tr>';
+        
+        fetch(WEB_APP_URL)
+            .then(response => {
+                // Check for HTTP errors (e.g., 404, 500)
+                if (!response.ok) {
+                    throw new Error(`HTTP Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(dataObject => {
+                // CRITICAL FIX: Access the array from the 'data' property
+                const products = dataObject.data; 
+
+                if (!products || products.length === 0) {
+                    placeholder.innerHTML = '<tr><td colspan="4" style="text-align: center;">हाल कुनै उपस्थिति दर्ता भएको छैन।</td></tr>';
+                    return;
+                }
+                
+                let out = "";
+                for (let product of products) {
+                    // Use || '' to ensure empty phoneNum doesn't display 'null' or 'undefined'
+                    out += `
+                    <tr>
+                        <td style="text-align: center;">${product.sn || ''}</td>
+                        <td>${product.fullName || ''}</td>
+                        <td>${product.address || ''}</td>
+                        <td>${product.phoneNum || ''}</td>
+                    </tr>
+                    `;
+                }
+                placeholder.innerHTML = out;
+            })
+            .catch(error => {
+                // This block runs if Network/CORS/JSON Parsing fails
+                console.error('Data Fetching Failed (Check CORS/Deployment Permissions!):', error);
+                placeholder.innerHTML = '<tr><td colspan="4" style="color: red; text-align: center;">उपस्थिति डाटा लोड गर्न सकिएन।</td></tr>';
+            });
+    }
+
+    // ----------------------------------------------------------------------
+    // 3. JQUERY READY FUNCTION AND EVENT HANDLERS
+    // ----------------------------------------------------------------------
+    $(function(){
+        // A. Initial Data Load when the page is ready
+        fetchAttendance();
+
+        // Modal Logic
+        $('#upastithi').click(function(){
+            $('#login-modal').fadeIn().css("display", "flex");
+        });
+
+        $('.close-modal').click(function() {
+            $('#login-modal').fadeOut();
+        });
+
+        $(document).mouseup(function(e) {
+            var modal = $('#login-modal');
+            if (!modal.is(e.target) && modal.has(e.target).length === 0) {
+                modal.fadeOut();
+            }
+        });
+
+        // B. Form Submission Handler 
+        $('#list').on('submit', function(e) {
+
+            // CRITICAL: CAPTURE AND SET CLIENT TIME BEFORE SUBMISSION
+            const now = new Date();
+            // Get time in Nepal Time Zone
+            const clientTime = now.toLocaleString('en-US', { timeZone: 'Asia/Kathmandu' }); 
+            $('#clientSubmitTime').val(clientTime);
+
+            // Handle success feedback and cleanup (This runs immediately after form submits to iframe)
+            setTimeout(function() {
+                const popup = document.getElementById('thank-you-popup');
+                if (popup) {
+                    popup.style.display = 'flex';
+
+                    // Hide popup after 2 seconds
+                    setTimeout(() => {
+                        popup.style.display = 'none';
+                    }, 2000);
+                }
+
+                // Close modal and reset form
+                $('#login-modal').fadeOut();
+                document.getElementById('list').reset();
+
+                // REFRESH TABLE: Call fetchAttendance to show the newly added entry
+                // Wait 1 second to give the Google Sheet time to process the doPost
+                setTimeout(fetchAttendance, 1000); 
+
+            }, 250);
+        });
+    });
+
+    // ----------------------------------------------------------------------
+    // 4. WINDOW LOAD/ANIMATION
+    // ----------------------------------------------------------------------
+    // Shrink animation for the button
+    window.onload = function() {
+        const button = document.querySelector('.registration'); 
+        button.classList.add('shrink-effect');
+    };
+</script>
 
     </body>
 </html>
