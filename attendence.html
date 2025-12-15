@@ -53,11 +53,16 @@
             border: 1px solid white;
         }
 
+
         th,td{
             padding: 5px;
-            border: 1px solid bl;
+            border: 1px solid white;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
+
+        th:nth-child(1), td:nth-child(1) { width: 30x; }
 
 
 
@@ -324,9 +329,9 @@
                 <!-- <form action="connect.php" method="POST"> -->
                 <form id="list" action="https://script.google.com/macros/s/AKfycbw4EooSdoBwqvmcvYVmlUO9aDHcyoukxR9GPLlf01ukHV_M3qCRxxTHQoYNGlfuhS1Qdw/exec" method="POST" target="hidden_iframe">
                     <h4 style="font-weight: 600; color:#0f204e; text-align: left;">तपाईंको जानकारी ?</h4>
-                    <input type="text" name="fullName" placeholder="पूरा नाम" required>
-                    <input type="text" name="address" placeholder="ठेगाना">
-                    <input type="tel" name="phoneNum" placeholder="सम्पर्क नम्बर">
+                    <input type="text" name="fullName" placeholder="पूरा नाम" maxlength="20">
+                    <input type="text" name="address" placeholder="ठेगाना" maxlength="20">
+                    <input type="tel" name="phoneNum" placeholder="सम्पर्क नम्बर" maxlength="15">
                     <input type="hidden" name="clientSubmitTime" id="clientSubmitTime">
                     <button id="submit" name="submit" type="submit">
                         बुझाउनुहोस्
@@ -489,6 +494,16 @@
         tbody.appendChild(tr);
     });
 }
+
+
+// function maskPhone(phone) {
+//     if (!phone) return "";
+//     phone = phone.toString();
+//     if (phone.length <= 3) return phone;
+//     return phone.substring(0, 3) + "...";
+// }
+
+
 
 </script>
 <script src="https://script.google.com/macros/s/AKfycbw4EooSdoBwqvmcvYVmlUO9aDHcyoukxR9GPLlf01ukHV_M3qCRxxTHQoYNGlfuhS1Qdw/exec?callback=handleData"></script>
